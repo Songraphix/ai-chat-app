@@ -31,8 +31,8 @@ const BANNED_KEYWORDS = [
   'violence'
 ];
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 // ============================================
 // MIDDLEWARE
@@ -76,12 +76,12 @@ function moderateOutput(text) {
 // ============================================
 
 async function callOpenRouter(userPrompt) {
-  if (!OPENROUTER_API_KEY) {
-    throw new Error('OPENROUTER_API_KEY not configured');
+  if (!GROQ_API_KEY) {
+    throw new Error('GROQ_API_KEY not configured');
   }
   
   const requestBody = {
-    model: 'minimax/minimax-m2:free',
+    model: 'llama-3.1-8b-instant',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: userPrompt }
@@ -90,27 +90,25 @@ async function callOpenRouter(userPrompt) {
     temperature: 0.7
   };
   
-  const response = await fetch(OPENROUTER_API_URL, {
+  const response = await fetch(GROQ_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'http://localhost:3000',
-      'X-Title': 'AI Chat Moderation App'
+      'Authorization': `Bearer ${GROQ_API_KEY}`
     },
     body: JSON.stringify(requestBody)
   });
   
   if (!response.ok) {
     const errorData = await response.text();
-    throw new Error(`OpenRouter API Error (${response.status}): ${errorData}`);
+    throw new Error(`Groq API Error (${response.status}): ${errorData}`);
   }
   
   const data = await response.json();
   const aiMessage = data.choices?.[0]?.message?.content;
   
   if (!aiMessage) {
-    throw new Error('No response content from OpenRouter');
+    throw new Error('No response content from Groq');
   }
   
   return aiMessage.trim();
@@ -186,10 +184,10 @@ app.listen(PORT, () => {
   console.log(`🚀 Server is running at: http://localhost:${PORT}`);
   console.log(`📝 Open your browser and visit the URL above\n`);
   
-  if (!OPENROUTER_API_KEY) {
-    console.log('⚠️  WARNING: OPENROUTER_API_KEY not set!');
+  if (!GROQ_API_KEY) {
+    console.log('⚠️  WARNING: GROQ_API_KEY not set!');
     console.log('Please set your API key:');
-    console.log('Windows CMD: set OPENROUTER_API_KEY=your-key-here');
-    console.log('Windows PowerShell: $env:OPENROUTER_API_KEY="your-key-here"\n');
+    console.log('Windows CMD: set GROQ_API_KEY=your-key-here');
+    console.log('Windows PowerShell: $env:GROQ_API_KEY="your-key-here"\n');
   }
 });
