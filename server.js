@@ -4,6 +4,7 @@
 // Express.js server that provides a web interface for the AI chat app
 // ============================================
 
+import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -81,7 +82,7 @@ async function callOpenRouter(userPrompt) {
   }
   
   const requestBody = {
-    model: 'llama-3.1-8b-instant',
+    model: 'llama-3.3-70b-versatile',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: userPrompt }

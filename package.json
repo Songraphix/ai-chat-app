@@ -9,10 +9,19 @@
     "dev": "node --watch server.js",
     "cli": "node app.js"
   },
-  "keywords": ["ai", "moderation", "deepseek", "chatbot", "content-safety", "express", "web"],
+  "keywords": [
+    "ai",
+    "moderation",
+    "deepseek",
+    "chatbot",
+    "content-safety",
+    "express",
+    "web"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^4.18.2"
   }
 }
