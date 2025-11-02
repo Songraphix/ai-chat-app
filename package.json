@@ -1,0 +1,18 @@
+{
+  "name": "ai-moderation-app",
+  "version": "1.0.0",
+  "description": "AI chat application with content moderation using DeepSeek",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "cli": "node app.js"
+  },
+  "keywords": ["ai", "moderation", "deepseek", "chatbot", "content-safety", "express", "web"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
